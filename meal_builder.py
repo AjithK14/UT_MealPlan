@@ -58,7 +58,14 @@ def build_meal(dishes, lower_boundaries, upper_boundaries):
 		else:
 			dish = sorted_nutrients[highest_unmet][sorted_indices[highest_unmet]]
 			sorted_indices[highest_unmet]+=1
+		while myMeal.containsDish(dish):
+			if sorted_indices[highest_unmet] >= len(sorted_nutrients[highest_unmet]):
+				dish = random.choice(sorted_nutrients[highest_unmet])
+			else:
+				dish = sorted_nutrients[highest_unmet][sorted_indices[highest_unmet]]
+				sorted_indices[highest_unmet]+=1
 		# print("We need {} so we add {}".format(highest_unmet,dish.name))
+		# print(myMeal)
 		myMeal.addDish(dish)
 		# print(myMeal)
 		constraint = myMeal.under_upper_bounds(upper_boundaries)
@@ -72,10 +79,7 @@ def build_meal(dishes, lower_boundaries, upper_boundaries):
 			nutrient_reject[constraint[1]]+=1
 			if nutrient_reject[constraint[1]] > 3 and not myMeal.isEmpty():
 				sorted_meal = myMeal.sort_by_nutrient(constraint[1])
-				# print(myMeal.totals)
-				# print(sorted_meal[-1])
 				myMeal.removeDish(sorted_meal[-1])
-				# print(myMeal.totals)
 				# print("Also removed {} because of excess {}".format(sorted_meal[-1],
 					# constraint[1]))
 				nutrient_reject[constraint[1]] = 0

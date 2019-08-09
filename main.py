@@ -70,7 +70,12 @@ def main():
 		testMeal = Meal({})
 		dishes = crawl_menu(get_menu_url(MEALS[choice-1],locations[choice_2-1]),
 			red_meat=False,fish=False)
-		non_winners = []
+
+		#user is given results: meals that meet the minimum are printed first
+		#then, meals that are lopsided; there are stored in a list called non_winners
+		non_winners=[]
+		#store a running list of meals to prevent the same meal from printing twice
+		all_meals = []
 		print()
 		print()
 		print("Meals that meet your minimum requirements:")
@@ -83,9 +88,12 @@ def main():
 			meal = output[0]
 			found_winner = output[1]
 			if found_winner:
+				if set(meal.items.keys()) in all_meals:
+					continue
 				print(meal)
 				print(meal.meal_score())
 				print()
+				all_meals.append(set(meal.items.keys()))
 			else:
 				non_winners.append(meal)
 			# if not isinstance(meal,str):
@@ -93,8 +101,11 @@ def main():
 		print("Meals that are slightly lopsided:")
 		print()
 		for meal in non_winners:
+			if set(meal.items.keys()) in all_meals:
+				continue
 			print(meal)
 			print(meal.meal_score())
 			print()
+			all_meals.append(set(meal.items.keys()))
 if __name__ == "__main__":
 	main()
