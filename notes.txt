@@ -1,0 +1,23 @@
+-to add more nutrients, just go to menu_crawler.py 
+and add it to TARGET_NUTRIENTS; Also modify menu_crawler and create_nutrition_spreadsheet 
+of the file to include these nutrients. 
+As long as menu_crawler is imported
+this variable will be present
+
+-1 serving of french fries is about 42 of them
+
+-for commenting code:
+https://packagecontrol.io/packages/Comment-Snippets
+
+-for android scraping:
+https://www.youtube.com/watch?v=x-VmYZGPnWc
+
+-for csv reading:
+for i in numFiles:
+    file = open(os.path.join(pathName, i), "rU")
+    reader = csv.reader(file, delimiter=',')
+    for row in reader:
+        for column in row:
+            print(column)
+            if column=="SPECIFIC VALUE":
+                #do stuff

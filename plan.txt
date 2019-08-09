@@ -1,0 +1,102 @@
+
+LONG-TERM ROADMAP:
+-Get algorithm working on one webpage
+-test algo with sodium, cholestorol, vegans? -- LATER
+-Try out for android app and decide web vs mobile
+-Create github repo for android app
+-Implement those webscraping techniques in an android app
+--app must display MULTIPLE meal options from dining hall and rank them
+-Have app display MSCORE
+-Test if android app can figure out which dining hall is the best
+-(worst case, user just goes through each dining hall and compares the MSCORES)
+
+
+TODO:
+-Figure out how the calories and TOTAL nutrition requirements will break down
+**Maybe ask user how many meals/snacks he or she eats per day
+-Implement algorithm on one webpage
+-Create a python script that properly comments all my files ?
+--potentially takes a spreadsheet of methods and comments?
+
+
+---------
+Files:
+---------
+menu_crawler.py -- DONE
+-method1
+-method2
+-helpermethod
+
+Dish.py -- DONE 
+-class2
+
+Meal.py -- DONE
+-class1
+
+meal_builder.py -- DONE*
+-method3
+-method4
+-method5*
+-method6*
+
+main.py -- DONE
+-main()
+
+*any class can have main, but must have if name main thing
+
+
+
+---------------------------------------------
+Classes and their required methods/variables:
+---------------------------------------------
+1. Meal -- DONE 
+-Return MScore and NScores XXXXXX
+*****FOR NOW: just display how much of each individual nutrient is missing *****
+**** also return avg abs deviation
+-Calculate nutrient totals
+-Determine which nutrient is lacking
+-Figure out if all nutrients are met
+** for boundaries, the LBs will be a class attribute and the UBs must be fed separately
+
+(optional) identify which foods are providing the majority of which nutrient
+
+2. Dish -- DONE
+-Return individual nutrient amounts
+
+
+
+-----------------------------------------
+Required methods:
+-----------------------------------------
+1. create_nutrition_spreadsheet(menu_url) -- DONE
+*method just for display/visualization purposes
+input: menu url
+output: filename of spreadsheet 
+
+2. crawl_menu(menu_url) -- DONE
+input: menu url
+output: list of all dishes in menu
+
+3. build_meal(dishes, boundaries_filename) -- DONE
+input: list of dishes and spreadsheet of boundaries(row:nutrient,col:LB,IA,etc.)
+output: a single meal
+
+4. sort_meal(meal, attribute) -- DONE
+**MOVED TO Meal.py
+input: a list of dishes and the desired attribute of sorting (for food highest of nutrient)
+output: a sorted list of dishes
+
+5. rank_meals(meals)* 
+input: a list of meals
+output: a sorted list of meals with descending MSCORE
+
+6. search_for_meals(N)*
+input: a number of desired candidate meals
+output: ranked list of meals
+
+7. main()
+input: nothing
+output: nothing
+
+*may not be usable because i think the algo is deterministic
+**Must-have menu options?
