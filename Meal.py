@@ -26,6 +26,8 @@ class Meal:
 			self.totals[nutrient]+=dish.nutrition[nutrient]
 
 	def removeDish(self, dishname):
+		if dishname not in self.items:
+			return
 		self.totals = {nutrient: 
 		self.totals[nutrient]-self.items[dishname].nutrition[nutrient] 
 		for nutrient in TARGET_NUTRIENTS}
@@ -79,7 +81,7 @@ class Meal:
 
 	def isEmpty(self):
 		""" does the meal have any dishes in it? """
-		return len(self.items)>0
+		return len(self.items)==0
 
 	def __str__(self):
 		""" print method """

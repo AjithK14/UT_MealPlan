@@ -70,11 +70,31 @@ def main():
 		testMeal = Meal({})
 		dishes = crawl_menu(get_menu_url(MEALS[choice-1],locations[choice_2-1]),
 			red_meat=False,fish=False)
-		meal = build_meal(dishes,TEST_LB,TEST_UB)
+		non_winners = []
 		print()
-		print(meal)
-		if not isinstance(meal,str):
+		print()
+		print("Meals that meet your minimum requirements:")
+		print()
+		for i in range(5):
+			output = build_meal(dishes,TEST_LB,TEST_UB)
+			if isinstance(output,str):
+				print(output)
+				break
+			meal = output[0]
+			found_winner = output[1]
+			if found_winner:
+				print(meal)
+				print(meal.meal_score())
+				print()
+			else:
+				non_winners.append(meal)
+			# if not isinstance(meal,str):
+			# 	print(meal.meal_score())
+		print("Meals that are slightly lopsided:")
+		print()
+		for meal in non_winners:
+			print(meal)
 			print(meal.meal_score())
-
+			print()
 if __name__ == "__main__":
 	main()

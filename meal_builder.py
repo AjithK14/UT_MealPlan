@@ -24,6 +24,7 @@ from Dish import *
 from Meal import *
 from menu_crawler import *
 import random
+import math
 
 __author__ = "Ajith Kemisetti"
 __email__ = "kemisettia@gmail.com"
@@ -47,20 +48,23 @@ def build_meal(dishes, lower_boundaries, upper_boundaries):
 	#descending list of foods with most of each respective nutrient
 	sorted_nutrients = {nutrient: sorted(dishes, 
 		key=lambda x: x.nutrition[nutrient],reverse=True) for nutrient in TARGET_NUTRIENTS}
-	while True:
+	sorted_indices = {nutrient: 0 for nutrient in TARGET_NUTRIENTS}
+	bestMeal = 0
+	bestScore = math.inf
+	for i in range(100):
 		highest_unmet = myMeal.nutrient_totals()[0]
-		index = 0
-		dish = random.choice(sorted_nutrients[highest_unmet][0:int(len(dishes)/2)])
-		while myMeal.containsDish(dish):
-			index+=1
-			dish = sorted_nutrients[highest_unmet][index]
+		if sorted_indices[highest_unmet] >= len(sorted_nutrients[highest_unmet]):
+			dish = random.choice(sorted_nutrients[highest_unmet])
+		else:
+			dish = sorted_nutrients[highest_unmet][sorted_indices[highest_unmet]]
+			sorted_indices[highest_unmet]+=1
 		# print("We need {} so we add {}".format(highest_unmet,dish.name))
 		myMeal.addDish(dish)
 		# print(myMeal)
 		constraint = myMeal.under_upper_bounds(upper_boundaries)
 		if constraint[0]:
 			if myMeal.all_nutrients_met():
-				return myMeal
+				return myMeal, True
 		else:
 			# print("Too much of the {} nutrient".format(constraint[1]))
 			myMeal.removeDish(dish.name)
@@ -68,10 +72,18 @@ def build_meal(dishes, lower_boundaries, upper_boundaries):
 			nutrient_reject[constraint[1]]+=1
 			if nutrient_reject[constraint[1]] > 3 and not myMeal.isEmpty():
 				sorted_meal = myMeal.sort_by_nutrient(constraint[1])
+				# print(myMeal.totals)
+				# print(sorted_meal[-1])
 				myMeal.removeDish(sorted_meal[-1])
+				# print(myMeal.totals)
 				# print("Also removed {} because of excess {}".format(sorted_meal[-1],
 					# constraint[1]))
 				nutrient_reject[constraint[1]] = 0
+		if myMeal.meal_score() < bestScore:
+			bestScore = myMeal.meal_score()
+			bestMeal = Meal(myMeal.boundaries.copy())
+			bestMeal.items = myMeal.items.copy()
+			bestMeal.totals = myMeal.totals.copy()
 		# print(myMeal.meal_score())
 		# print()
-	return myMeal
+	return bestMeal, False
